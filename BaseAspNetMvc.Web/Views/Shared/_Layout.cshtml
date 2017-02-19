@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render(VirtualPaths.Style.Bootstrap)
+    @Styles.Render(VirtualPaths.Style.Site)
+    @Scripts.Render(VirtualPaths.Script.Modernizr)
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+        @{
+            var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+        }
+        @helper selected(string c, string culture)
+        {
+            if (c == culture)
+            {
+                @:checked="checked"
+            }
+        }
+
+        @using (Html.BeginForm("SetCultureHome", "Home"))
+        {
+            <fieldset>
+                <legend>Choose language</legend>
+                <div class="control-group">
+                    <div class="controls">
+                        <label for="en-us">
+                            <input name="culture" id="en-us" value="en-us" type="radio" @selected("en-us", culture) /> English
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label for="es">
+                            <input name="culture" id="es" value="es" type="radio" @selected("es", culture) /> Español
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label for="ar">
+                            <input name="culture" id="ar" value="ar" type="radio" @selected("ar", culture) /> العربية
+                        </label>
+                    </div>
+                </div>
+
+            </fieldset>
+        }
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render(VirtualPaths.Script.Jquery)
+    @Scripts.Render(VirtualPaths.Script.BootstrapPack)
+
+    <script>
+        (function ($) {
+            $("input[type = 'radio']").click(function () {
+                $(this).parents("form").submit(); // post form
+            });
+
+        })(jQuery);
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
